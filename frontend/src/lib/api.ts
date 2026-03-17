@@ -1,4 +1,4 @@
-import { clearSession, getSession } from "./session";
+import { getSession } from "./session";
 
 type ApiError = {
   message?: string;
@@ -25,9 +25,6 @@ export async function apiFetch<T>(
   }
 
   const res = await fetch(url, { ...init, headers });
-  if (res.status === 401) {
-    clearSession();
-  }
 
   if (!res.ok) {
     let body: ApiError | null = null;

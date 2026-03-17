@@ -76,9 +76,15 @@ public class PlayerProfileServiceImpl implements PlayerProfileService {
         }
         var user = userOpt.get();
 
-        if (user.isProfileCompleted()) {
+        // Strong check: if a profile row already exists, treat the profile as completed.
+        var existingProfile = playerProfileRepository.findByUserDetailsId(currentUserId);
+        if (existingProfile.isPresent()) {
+            if (!user.isProfileCompleted()) {
+                user.setProfileCompleted(true);
+                userDetailRepository.save(user);
+            }
             return ResponseEntity.status(409)
-                    .body(PlayerProfileResponse.builder().message("Player profile already completed for this user").build());
+                    .body(PlayerProfileResponse.builder().message("Player profile already exists for this user").build());
         }
 
         if (playerProfileRepository.existsByNickname(aliasName)) {

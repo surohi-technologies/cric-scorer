@@ -406,3 +406,720 @@ body {
   grid-template-columns: 1fr 1fr 1.2fr;
   gap: 10px;
 }
+.dashGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 960px) {
+  .dashGrid {
+    grid-template-columns: 380px 1fr 420px;
+    align-items: start;
+  }
+}
+
+.dashLeftInner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 760px) {
+  .dashLeftInner {
+    grid-template-columns: 260px 1fr;
+    align-items: center;
+  }
+}
+
+.perfBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.perfRing {
+  width: 188px;
+  height: 188px;
+  border-radius: 999px;
+  padding: 12px;
+  box-shadow: 0 20px 60px rgba(0, 194, 255, 0.16);
+}
+
+.perfRingInner {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(124, 255, 178, 0.14);
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.perfNum {
+  font-size: 46px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.perfDen {
+  margin-top: -6px;
+  color: var(--text1);
+  font-size: 13px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.perfLabel {
+  color: var(--text1);
+  font-size: 13px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.formBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.formTitle {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.formPct {
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text1);
+  font-size: 13px;
+}
+
+.formChips {
+  display: flex;
+  gap: 10px;
+}
+
+.formChip {
+  width: 28px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.chipGood {
+  background: rgba(124, 255, 178, 0.55);
+  border-color: rgba(124, 255, 178, 0.3);
+}
+
+.chipGood2 {
+  background: rgba(84, 255, 125, 0.5);
+  border-color: rgba(84, 255, 125, 0.3);
+}
+
+.chipMid {
+  background: rgba(231, 255, 58, 0.55);
+  border-color: rgba(231, 255, 58, 0.32);
+}
+
+.chipWarn {
+  background: rgba(255, 179, 0, 0.55);
+  border-color: rgba(255, 179, 0, 0.32);
+}
+
+.chipBad {
+  background: rgba(255, 59, 59, 0.5);
+  border-color: rgba(255, 59, 59, 0.35);
+}
+
+.chipInfo {
+  background: rgba(0, 194, 255, 0.5);
+  border-color: rgba(0, 194, 255, 0.3);
+}
+
+.chipNone {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.profileCard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+@media (min-width: 760px) {
+  .profileCard {
+    grid-template-columns: 180px 1fr;
+  }
+}
+
+.avatarWrap {
+  width: 180px;
+  height: 180px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 18px 65px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(0, 194, 255, 0.2);
+}
+
+.profileMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metaLine {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px dashed rgba(124, 255, 178, 0.12);
+  padding-bottom: 8px;
+}
+
+.metaKey {
+  color: var(--text1);
+  font-size: 13px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.metaVal {
+  text-align: right;
+  font-size: 13px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.profileCorner {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  z-index: 2;
+}
+
+.teamBadge {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 194, 255, 0.18);
+}
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(234, 247, 255, 0.92);
+  font-size: 12px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.teamRowEmpty {
+  gap: 10px;
+}
+
+.teamHint {
+  color: var(--text1);
+}
+
+.teamLogo {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+}
+
+.welcomeFly {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  pointer-events: none;
+  animation: welcomeFly 1350ms cubic-bezier(0.18, 0.86, 0.22, 1) forwards;
+}
+
+.welcomeFlyInner {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(124, 255, 178, 0.22);
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(14px);
+}
+
+.welcomeFlyTitle {
+  font-size: 12px;
+  color: var(--text1);
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: 0.2px;
+}
+
+.welcomeFlyName {
+  margin-top: 2px;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+}
+
+@keyframes welcomeFly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.03);
+    filter: blur(2px);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50vw + 150px), calc(-50vh + 120px)) scale(0.72);
+    filter: blur(0);
+  }
+}
+.neonCardHeadRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.neonCardRight {
+  margin-top: 2px;
+}
+.quoteBanner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 194, 255, 0.16);
+  background: rgba(0, 0, 0, 0.18);
+  margin-bottom: 14px;
+}
+
+.quoteDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--neonA), var(--neonB));
+  box-shadow: 0 0 0 6px rgba(0, 194, 255, 0.08);
+}
+
+.quoteText {
+  color: rgba(234, 247, 255, 0.92);
+  font-size: 13px;
+  line-height: 1.35;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.dashTwoCol {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 760px) {
+  .dashTwoCol {
+    grid-template-columns: 260px 1fr;
+    align-items: center;
+  }
+}
+
+.perfDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.welcomeDock {
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 255, 178, 0.16);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.welcomeDockHi {
+  color: var(--text1);
+  font-size: 12px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.welcomeDockName {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.25px;
+  margin-top: 2px;
+}
+
+@keyframes welcomeFly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.02);
+    filter: blur(2px);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--welcome-end-x) - 50vw), calc(var(--welcome-end-y) - 50vh)) scale(0.72);
+    filter: blur(0);
+  }
+}
+
+
+.pageDash {
+  background:
+    radial-gradient(900px 700px at 20% 20%, rgba(255, 255, 255, 0.22), transparent 60%),
+    radial-gradient(1000px 800px at 85% 15%, rgba(191, 255, 224, 0.20), transparent 55%),
+    radial-gradient(1000px 800px at 50% 95%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(135deg, var(--bg0), var(--bg1));
+}
+
+.pageDash::before {
+  opacity: 0.18;
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.10), rgba(0, 0, 0, 0)),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.10) 0px,
+      rgba(255, 255, 255, 0.10) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  mix-blend-mode: soft-light;
+}
+
+.pageDash .topBar {
+  background: rgba(255, 255, 255, 0.62);
+  border-bottom: 1px solid rgba(6, 33, 18, 0.12);
+}
+
+.pageDash .topBarTag,
+.pageDash .chip,
+.pageDash .muted,
+.pageDash .heroMsg,
+.pageDash .heroMeta,
+.pageDash .label,
+.pageDash .perfDen,
+.pageDash .perfLabel,
+.pageDash .formPct,
+.pageDash .quoteText {
+  color: var(--text1);
+}
+
+.pageDash .chip {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(6, 33, 18, 0.14);
+}
+
+.pageDash .input {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(6, 33, 18, 0.16);
+  color: var(--text0);
+}
+
+.pageDash .input:focus {
+  border-color: rgba(11, 191, 99, 0.65);
+  box-shadow: 0 0 0 3px rgba(11, 191, 99, 0.20);
+}
+
+.pageDash .quoteBanner {
+  background: rgba(255, 255, 255, 0.62);
+  border-color: rgba(6, 33, 18, 0.12);
+}
+
+.pageDash .quoteDot {
+  box-shadow: 0 0 0 6px rgba(11, 191, 99, 0.14);
+}
+
+.pageDash .perfRingInner {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(6, 33, 18, 0.12);
+}
+
+.pageDash .formChip {
+  border-color: rgba(6, 33, 18, 0.10);
+}
+
+.pageDash .welcomeFlyInner {
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(6, 33, 18, 0.14);
+}
+
+.pageDash .teamBadge {
+  background: rgba(255, 255, 255, 0.62);
+  border-color: rgba(6, 33, 18, 0.12);
+}
+
+.pageDash .btnGhost {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(6, 33, 18, 0.16);
+}
+
+.pageDash .btnPrimary {
+  color: #ffffff;
+  background: linear-gradient(135deg, #0bbf63, #0a9f57);
+}
+/* Dashboard-only palette: Dark Glass */
+.pageDash {
+  color-scheme: dark;
+
+  /* Background */
+  --bg0: #0B0F1A;
+  --bg1: #121826;
+
+  /* Text */
+  --text0: #FFFFFF;
+  --text1: #9CA3AF;
+  --label: #6B7280;
+
+  /* Glass */
+  --card: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.10);
+  --shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
+
+  /* Accents */
+  --neonA: #22C55E;
+  --neonB: #4ADE80;
+  --neonC: #16A34A;
+
+  /* Ring track */
+  --ringTrack: #1F2937;
+}
+
+.pageDash {
+  background:
+    radial-gradient(1200px 900px at 18% 18%, rgba(34, 197, 94, 0.10), transparent 62%),
+    radial-gradient(900px 700px at 82% 14%, rgba(74, 222, 128, 0.08), transparent 55%),
+    linear-gradient(135deg, var(--bg0), var(--bg1));
+}
+
+.pageDash::before {
+  opacity: 0.20;
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0)),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.06) 0px,
+      rgba(255, 255, 255, 0.06) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  mix-blend-mode: screen;
+}
+
+.pageDash .topBar {
+  background: rgba(11, 15, 26, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pageDash .neonCard {
+  backdrop-filter: blur(12px);
+}
+
+.pageDash .neonCard::before {
+  opacity: 0.28;
+  filter: blur(14px);
+}
+
+.pageDash .topBarTag,
+.pageDash .chip,
+.pageDash .muted,
+.pageDash .heroMsg,
+.pageDash .heroMeta,
+.pageDash .perfDen,
+.pageDash .perfLabel,
+.pageDash .formPct,
+.pageDash .quoteText {
+  color: var(--text1);
+}
+
+.pageDash .label {
+  color: var(--label);
+}
+
+.pageDash .chip {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+.pageDash .quoteBanner {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(12px);
+}
+
+.pageDash .quoteDot {
+  box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
+}
+
+.pageDash .perfRing {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+}
+
+.pageDash .perfRingInner {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+.pageDash .formChip {
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+.pageDash .welcomeFlyInner {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(12px);
+}
+
+.pageDash .teamBadge {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(12px);
+}
+
+.pageDash .btnGhost {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+.pageDash .btnPrimary {
+  color: #06110B;
+  background: linear-gradient(135deg, var(--neonA), var(--neonB));
+}
+.trumpTabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.trumpTab {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text1);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.trumpTabActive {
+  color: var(--text0);
+  border-color: rgba(34, 197, 94, 0.55);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
+.trumpCard {
+  margin-top: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+
+.trumpHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  background:
+    radial-gradient(600px 250px at 30% 30%, rgba(34, 197, 94, 0.14), transparent 60%),
+    radial-gradient(500px 260px at 80% 10%, rgba(74, 222, 128, 0.12), transparent 55%);
+}
+
+.trumpName {
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.25px;
+}
+
+.trumpMeta {
+  margin-top: 4px;
+  color: var(--text1);
+  font-size: 12px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.trumpBadge {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.trumpJersey {
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: var(--text0);
+  font-weight: 900;
+}
+
+.trumpBody {
+  padding: 12px 14px 14px;
+}
+
+.trumpGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.trumpRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.trumpKey {
+  color: var(--label);
+  font-size: 12px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.trumpVal {
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 800;
+  color: var(--text0);
+}
+
+@media (max-width: 520px) {
+  .trumpGrid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Dashboard layout: full-width so left card sits on the real left edge */
+.pageDash .container {
+  width: calc(100% - 48px);
+  max-width: none;
+  margin: 0 24px;
+}
+
+@media (min-width: 1400px) {
+  .pageDash .container {
+    width: calc(100% - 80px);
+    margin: 0 40px;
+  }
+}
+
+/* Keep logout button visible and punchy on dark glass */
+.pageDash .btnDanger {
+  box-shadow: 0 0 22px rgba(255, 0, 106, 0.28);
+}

@@ -245,8 +245,18 @@ export default function ProfilePage() {
 
       clearDraft(session.userId);
       setSession({ ...session, profileCompleted: true, firstTimeLogin: false, nextAction: "NONE" });
+      sessionStorage.setItem("cric:welcome", "1");
       nav("/dashboard", { replace: true });
     } catch (err: any) {
+      // If the backend says profile already exists, treat it as completed and go to dashboard.
+      if (err?.status === 409) {
+        clearDraft(session.userId);
+        setSession({ ...session, profileCompleted: true, firstTimeLogin: false, nextAction: "NONE" });
+        sessionStorage.setItem("cric:welcome", "1");
+        nav("/dashboard", { replace: true });
+        return;
+      }
+
       const details = err?.details;
       if (details?.errors && Array.isArray(details.errors)) {
         const apiErrors: FieldErrors = {};

@@ -72,6 +72,9 @@ export default function LoginPage() {
         nextAction: res.nextAction
       });
 
+      // Trigger the dashboard welcome animation once per login.
+      sessionStorage.setItem("cric:welcome", "1");
+
       if (res.nextAction === "COMPLETE_PROFILE" || !res.profileCompleted) {
         nav("/profile", { replace: true });
       } else {

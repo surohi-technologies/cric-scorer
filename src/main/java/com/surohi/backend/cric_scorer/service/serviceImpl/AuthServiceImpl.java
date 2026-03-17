@@ -1,5 +1,6 @@
 package com.surohi.backend.cric_scorer.service.serviceImpl;
 
+import com.surohi.backend.cric_scorer.repository.PlayerProfileRepository;
 import com.surohi.backend.cric_scorer.repository.UserDetailRepository;
 import com.surohi.backend.cric_scorer.request.LoginRequest;
 import com.surohi.backend.cric_scorer.response.LoginResponse;
@@ -18,16 +19,19 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
 
     private final UserDetailRepository userDetailRepository;
+    private final PlayerProfileRepository playerProfileRepository;
     private final PasswordEncoder passwordEncoder;
     private final SessionService sessionService;
     private final long idleTimeoutSeconds;
     private final LoginValidator loginValidator = new LoginValidator();
 
     public AuthServiceImpl(UserDetailRepository userDetailRepository,
+                           PlayerProfileRepository playerProfileRepository,
                            PasswordEncoder passwordEncoder,
                            SessionService sessionService,
                            @Value("${app.session.idle-timeout-seconds:60}") long idleTimeoutSeconds) {
         this.userDetailRepository = userDetailRepository;
+        this.playerProfileRepository = playerProfileRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionService = sessionService;
         this.idleTimeoutSeconds = Math.max(1, idleTimeoutSeconds);
@@ -51,7 +55,17 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.status(401).body(LoginResponse.builder().message("Invalid credentials").build());
         }
 
+        // Repair legacy data: if profile exists but flag wasn't set, set it now.
         boolean profileCompleted = user.isProfileCompleted();
+        if (!profileCompleted) {
+            boolean profileExists = playerProfileRepository.findByUserDetailsId(user.getId()).isPresent();
+            if (profileExists) {
+                user.setProfileCompleted(true);
+                userDetailRepository.save(user);
+                profileCompleted = true;
+            }
+        }
+
         boolean firstTimeLogin = !profileCompleted;
         String nextAction = profileCompleted ? "NONE" : "COMPLETE_PROFILE";
 
