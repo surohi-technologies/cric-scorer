@@ -6,6 +6,7 @@ import com.surohi.backend.cric_scorer.repository.UserSessionRepository;
 import com.surohi.backend.cric_scorer.service.SessionService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
@@ -31,7 +32,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String createSessionKey(Long userId) {
         var user = userDetailRepository.findById(userId).orElseThrow();
         String sessionKey = UUID.randomUUID().toString();
@@ -89,4 +90,3 @@ public class SessionServiceImpl implements SessionService {
         }
     }
 }
-

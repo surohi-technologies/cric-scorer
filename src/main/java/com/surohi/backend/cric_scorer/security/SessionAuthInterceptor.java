@@ -18,8 +18,11 @@ public class SessionAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
         String path = request.getRequestURI();
-        if (path.endsWith("/user/register") || path.endsWith("/auth/login")) {
+        if (path.endsWith("/user/register") || path.endsWith("/auth/login") || path.endsWith("/auth/logout") || path.contains("/meta/")) {
             return true;
         }
 

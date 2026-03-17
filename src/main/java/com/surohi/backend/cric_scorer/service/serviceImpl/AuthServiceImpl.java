@@ -34,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<LoginResponse> login(LoginRequest request) {
         loginValidator.validate(request);
 
