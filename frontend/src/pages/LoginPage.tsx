@@ -18,6 +18,7 @@ type LoginResponse = {
 };
 
 const REMEMBER_KEY = "cric:rememberLogin";
+const FLASH_KEY = "cric:flash";
 
 export default function LoginPage() {
   const nav = useNavigate();
@@ -25,6 +26,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -41,12 +43,21 @@ export default function LoginPage() {
     }
   }, []);
 
+  useEffect(() => {
+    const flash = sessionStorage.getItem(FLASH_KEY);
+    if (flash) {
+      setInfo(flash);
+      sessionStorage.removeItem(FLASH_KEY);
+    }
+  }, []);
+
   const helper = useMemo(() => {
     return "Use your username, mobile number, or email ID.";
   }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setInfo(null);
     setError(null);
 
     if (remember) {
@@ -88,7 +99,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="page">
+    <div className="page pageAuth pageLogin">
       <TopBar />
       <main className="container">
         <div className="hero">
@@ -124,11 +135,17 @@ export default function LoginPage() {
               />
             </label>
 
-            <label className="checkRow">
-              <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-              <span>Remember me (prefill login ID next time)</span>
-            </label>
+            <div className="rowSplit">
+              <label className="checkRow">
+                <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+                <span>Remember me (prefill login ID next time)</span>
+              </label>
+              <Link className="link" to="/forgot-password">
+                Forgot password?
+              </Link>
+            </div>
 
+            {info ? <div className="alert alertOk">{info}</div> : null}
             {error ? <div className="alert alertErr">{error}</div> : null}
 
             <button className="btn btnPrimary" disabled={busy}>

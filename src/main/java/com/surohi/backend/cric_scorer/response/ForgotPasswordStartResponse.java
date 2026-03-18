@@ -11,12 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegistrationResponse {
+public class ForgotPasswordStartResponse {
     private String message;
-    private Long userId;
-    private String userName;
-    private String uniqueIdentifier;
-
-    private boolean verificationRequired;
-    private List<String> requiredChannels; // EMAIL / PHONE
+    private List<String> availableChannels; // EMAIL / PHONE (may be empty)
+    private String sentChannel;            // EMAIL / PHONE (may be null)
 }
+

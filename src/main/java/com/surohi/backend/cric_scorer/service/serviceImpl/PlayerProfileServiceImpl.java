@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PlayerProfileServiceImpl implements PlayerProfileService {
@@ -106,11 +107,7 @@ public class PlayerProfileServiceImpl implements PlayerProfileService {
         BowlingTacticalRole bowlingTacticalRole = require(bowlingTacticalRoleRepository.findById(request.getBowlingTacticalRoleId()), "bowlingTacticalRoleId", "Invalid bowlingTacticalRoleId");
         BowlingPreference bowlingPreference = require(bowlingPreferenceRepository.findById(request.getBowlingPreferenceId()), "bowlingPreferenceId", "Invalid bowlingPreferenceId");
         PlayerRole playerRoleType = require(playerRoleRepository.findById(request.getPlayerRoleTypeId()), "playerRoleTypeId", "Invalid playerRoleTypeId");
-
-        BattingIntent battingIntent = null;
-        if (request.getBattingIntentId() != null) {
-            battingIntent = require(battingIntentRepository.findById(request.getBattingIntentId()), "battingIntentId", "Invalid battingIntentId");
-        }
+        BattingIntent battingIntent = require(battingIntentRepository.findById(request.getBattingIntentId()), "battingIntentId", "Invalid battingIntentId");
 
         PlayerProfile playerProfile = new PlayerProfile();
         playerProfile.setUserDetails(user);
@@ -127,7 +124,14 @@ public class PlayerProfileServiceImpl implements PlayerProfileService {
         playerProfile.setBattingIntent(battingIntent);
         playerProfile.setFavouritePlayer(normalizeNullable(request.getFavouritePlayer()));
         playerProfile.setFavouriteTeam(normalizeNullable(request.getFavouriteTeam()));
-        playerProfile.setDescription(normalizeNullable(request.getDescription()));
+
+        // Security: if autoDescription is enabled (default), backend generates the description.
+        boolean autoDescription = request.getAutoDescription() == null || Objects.equals(Boolean.TRUE, request.getAutoDescription());
+        if (autoDescription) {
+            playerProfile.setDescription(buildAutoDescription(user, playerProfile));
+        } else {
+            playerProfile.setDescription(normalizeNullable(request.getDescription()));
+        }
 
         PlayerProfile savedProfile;
         try {
@@ -174,5 +178,109 @@ public class PlayerProfileServiceImpl implements PlayerProfileService {
         List<ValidationError> errors = new ArrayList<>();
         errors.add(new ValidationError(field, message));
         throw new ValidationException("Validation failed", errors);
+    }
+
+    private static String buildAutoDescription(UserDetail user, PlayerProfile profile) {
+        StringBuilder sb = new StringBuilder();
+
+        String alias = safe(profile.getNickname());
+        String jersey = profile.getJerseyNumber() > 0 ? "#" + profile.getJerseyNumber() : "";
+        String birthYear = user.getDob() != null ? String.valueOf(user.getDob().getYear()) : null;
+
+        String battingHand = profile.getBattingHand() != null ? safe(profile.getBattingHand().getArmType()) : null;
+        String bowlingHand = profile.getBowlingHand() != null ? safe(profile.getBowlingHand().getArmType()) : null;
+        String battingStyle = profile.getBattingStyle() != null ? safe(profile.getBattingStyle().getStyleName()) : null;
+        String battingPosition = profile.getBattingPosition() != null ? safe(profile.getBattingPosition().getPosition()) : null;
+        String battingIntent = profile.getBattingIntent() != null ? safe(profile.getBattingIntent().getIntentName()) : null;
+
+        String bowlingStyle = profile.getBowlingStyle() != null ? safe(profile.getBowlingStyle().getStyleName()) : null;
+        String bowlingRole = profile.getBowlingTacticalRole() != null ? safe(profile.getBowlingTacticalRole().getRoleName()) : null;
+        String bowlingPref = profile.getBowlingPreference() != null ? safe(profile.getBowlingPreference().getPreferenceName()) : null;
+
+        String playerRole = profile.getPlayerRoleType() != null ? safe(profile.getPlayerRoleType().getRoleName()) : null;
+        String favPlayer = safe(profile.getFavouritePlayer());
+        String favTeam = safe(profile.getFavouriteTeam());
+
+        // 1) Identity line
+        sb.append(alias);
+        if (!jersey.isBlank()) {
+            sb.append(" ").append(jersey);
+        }
+        if (birthYear != null) {
+            sb.append(" (born ").append(birthYear).append(")");
+        }
+        sb.append(" is ");
+        sb.append(playerRole != null ? ("a " + playerRole) : "a player");
+        sb.append(".");
+
+        // 2) Batting line
+        if (battingHand != null || battingStyle != null || battingPosition != null || battingIntent != null) {
+            sb.append(" Batting: ");
+            boolean wrote = false;
+            if (battingHand != null) {
+                sb.append(battingHand);
+                wrote = true;
+            }
+            if (battingStyle != null) {
+                if (wrote) sb.append(", ");
+                sb.append(battingStyle);
+                wrote = true;
+            }
+            if (battingPosition != null) {
+                if (wrote) sb.append(" ");
+                sb.append("bats at ").append(battingPosition);
+                wrote = true;
+            }
+            if (battingIntent != null) {
+                sb.append(wrote ? " with " : "");
+                sb.append(battingIntent).append(" intent");
+            }
+            sb.append(".");
+        }
+
+        // 3) Bowling line
+        if (bowlingHand != null || bowlingStyle != null || bowlingRole != null || bowlingPref != null) {
+            sb.append(" Bowling: ");
+            boolean wrote = false;
+            if (bowlingHand != null) {
+                sb.append(bowlingHand);
+                wrote = true;
+            }
+            if (bowlingStyle != null) {
+                if (wrote) sb.append(", ");
+                sb.append(bowlingStyle);
+                wrote = true;
+            }
+            if (bowlingRole != null) {
+                sb.append(wrote ? " " : "");
+                sb.append("(").append(bowlingRole).append(")");
+                wrote = true;
+            }
+            if (bowlingPref != null) {
+                sb.append(wrote ? ", prefers " : "prefers ");
+                sb.append(bowlingPref);
+            }
+            sb.append(".");
+        }
+
+        // 4) Favorites line
+        if (!favPlayer.isBlank() || !favTeam.isBlank()) {
+            sb.append(" Inspired by ");
+            if (!favPlayer.isBlank()) {
+                sb.append(favPlayer);
+            } else {
+                sb.append("cricket greats");
+            }
+            if (!favTeam.isBlank()) {
+                sb.append(" and supports ").append(favTeam);
+            }
+            sb.append(".");
+        }
+
+        return sb.toString().trim();
+    }
+
+    private static String safe(String value) {
+        return value == null ? "" : value.trim();
     }
 }

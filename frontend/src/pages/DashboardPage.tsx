@@ -262,7 +262,7 @@ export default function DashboardPage() {
         <div className="dashGrid">
           <div className="dashLeft">
             <NeonCard title="Performance" subtitle={summary?.roleLine || "Complete your profile to unlock insights."}>
-              <div className="dashTwoCol">
+              <div className="perfStack">
                 <div className="perfBlock">
                   <div
                     className="perfRing"

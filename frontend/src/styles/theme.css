@@ -394,6 +394,24 @@ body {
   accent-color: var(--neonB);
 }
 
+.rowSplit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.link {
+  color: var(--neonB);
+  text-decoration: none;
+  font-size: 13px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
 .fieldErr {
   margin-top: 6px;
   color: rgba(255, 220, 220, 0.92);
@@ -409,13 +427,44 @@ body {
 .dashGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  grid-template-areas:
+    "left"
+    "mid"
+    "right";
+  gap: 18px;
 }
 
+.dashLeft {
+  grid-area: left;
+  min-width: 0;
+}
+
+.dashMid {
+  grid-area: mid;
+  min-width: 0;
+}
+
+.dashRight {
+  grid-area: right;
+  min-width: 0;
+}
+
+/* Medium screens: keep performance on the left, profile on the right, trump card full-width below */
 @media (min-width: 960px) {
   .dashGrid {
-    grid-template-columns: 380px 1fr 420px;
+    grid-template-columns: 420px 1fr;
+    grid-template-areas:
+      "left right"
+      "mid mid";
     align-items: start;
+  }
+}
+
+/* Wide screens: 3 columns */
+@media (min-width: 1360px) {
+  .dashGrid {
+    grid-template-columns: 420px 1fr 440px;
+    grid-template-areas: "left mid right";
   }
 }
 
@@ -732,7 +781,7 @@ body {
   }
 }
 
-.perfDetails {
+.perfDetails {\n  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -779,9 +828,8 @@ body {
 
 .pageDash {
   background:
-    radial-gradient(900px 700px at 20% 20%, rgba(255, 255, 255, 0.22), transparent 60%),
-    radial-gradient(1000px 800px at 85% 15%, rgba(191, 255, 224, 0.20), transparent 55%),
-    radial-gradient(1000px 800px at 50% 95%, rgba(255, 255, 255, 0.14), transparent 55%),
+    radial-gradient(1200px 900px at 18% 18%, rgba(34, 197, 94, 0.05), transparent 62%),
+    radial-gradient(900px 700px at 82% 14%, rgba(74, 222, 128, 0.04), transparent 55%),
     linear-gradient(135deg, var(--bg0), var(--bg1));
 }
 
@@ -899,8 +947,8 @@ body {
 
 .pageDash {
   background:
-    radial-gradient(1200px 900px at 18% 18%, rgba(34, 197, 94, 0.10), transparent 62%),
-    radial-gradient(900px 700px at 82% 14%, rgba(74, 222, 128, 0.08), transparent 55%),
+    radial-gradient(1200px 900px at 18% 18%, rgba(34, 197, 94, 0.05), transparent 62%),
+    radial-gradient(900px 700px at 82% 14%, rgba(74, 222, 128, 0.04), transparent 55%),
     linear-gradient(135deg, var(--bg0), var(--bg1));
 }
 
@@ -964,7 +1012,7 @@ body {
 }
 
 .pageDash .perfRing {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.45);
 }
 
 .pageDash .perfRingInner {
@@ -1123,3 +1171,247 @@ body {
 .pageDash .btnDanger {
   box-shadow: 0 0 22px rgba(255, 0, 106, 0.28);
 }
+/* Dashboard Tuning: Ring + Trump Card sizing */
+.pageDash .dashLeft .neonCard {
+  /* Prevent the performance ring glow from visually overlapping other cards. */
+  overflow: hidden;
+}
+
+.pageDash .dashLeft .neonCardBody {
+  padding-bottom: 26px;
+}
+
+.pageDash .perfRing {
+  width: clamp(160px, 18vw, 210px);
+  height: clamp(160px, 18vw, 210px);
+  padding: 12px;
+}
+
+.pageDash .perfNum {
+  font-size: clamp(38px, 4vw, 50px);
+}
+
+.pageDash .dashTwoCol {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 760px) {
+  .pageDash .dashTwoCol {
+    grid-template-columns: 260px 1fr;
+    align-items: center;
+  }
+}
+
+/* Shrink the Trump Card a bit so the row looks balanced */
+.pageDash .trumpCard {
+  border-radius: 16px;
+}
+
+.pageDash .trumpHead {
+  padding: 12px 12px 8px;
+}
+
+.pageDash .trumpBody {
+  padding: 10px 12px 12px;
+}
+
+.pageDash .trumpRow {
+  padding: 7px 9px;
+  border-radius: 12px;
+}
+
+.pageDash .trumpName {
+  font-size: 15px;
+}
+
+.pageDash .trumpMeta {
+  font-size: 11px;
+}
+
+.pageDash .trumpJersey {
+  border-radius: 10px;
+  padding: 5px 8px;
+}
+
+.pageDash .trumpKey {
+  font-size: 11px;
+}
+
+.pageDash .trumpVal {
+  font-size: 12px;
+}
+.perfStack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pageDash .perfStack {
+  align-items: center;
+}
+
+.pageDash .perfDetails {
+  width: 100%;
+}
+
+.pwdRules {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pwdRule {
+  padding-left: 0;
+  font-size: 12px;
+  color: var(--text1);
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height: 1.3;
+}
+.segRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.segBtn {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text0);
+  padding: 10px 12px;
+  font-family: "Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.segBtn:hover {
+  transform: translateY(-1px);
+}
+
+.segBtnActive {
+  border-color: rgba(0, 194, 255, 0.55);
+  background: rgba(0, 194, 255, 0.10);
+  box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.12) inset;
+}
+
+.pwdRuleOk {
+  color: rgba(124, 255, 178, 0.95);
+}
+
+.pwdRuleBad {
+  color: rgba(255, 220, 220, 0.86);
+}
+
+/* Auth pages: Stadium crowd background with moving phone flashes */
+.pageAuth {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(1200px 700px at 20% 10%, rgba(0, 194, 255, 0.20), transparent 60%),
+              radial-gradient(900px 500px at 80% 0%, rgba(124, 255, 178, 0.12), transparent 55%),
+              linear-gradient(180deg, #020611 0%, #030915 55%, #02040b 100%);
+  overflow: hidden;
+}
+
+.pageAuth::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Stadium bowl + crowd rows */
+  background:
+    radial-gradient(1200px 420px at 50% 35%, rgba(255,255,255,0.08), transparent 60%),
+    radial-gradient(900px 340px at 50% 44%, rgba(0,194,255,0.10), transparent 62%),
+    linear-gradient(180deg, transparent 0%, transparent 48%, rgba(0,0,0,0.45) 68%, rgba(0,0,0,0.82) 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 10px);
+  opacity: 0.9;
+}
+
+.pageAuth::after {
+  content: "";
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: -8%;
+  height: 58%;
+  pointer-events: none;
+  /* Crowd silhouette + phone flashes */
+  background:
+    radial-gradient(circle at 10% 70%, rgba(255,255,255,0.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 18% 62%, rgba(255,255,255,0.18) 0 2px, transparent 3px),
+    radial-gradient(circle at 32% 66%, rgba(255,255,255,0.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 48% 60%, rgba(255,255,255,0.18) 0 2px, transparent 3px),
+    radial-gradient(circle at 63% 68%, rgba(255,255,255,0.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 77% 62%, rgba(255,255,255,0.18) 0 2px, transparent 3px),
+    radial-gradient(circle at 90% 70%, rgba(255,255,255,0.22) 0 2px, transparent 3px),
+    radial-gradient(900px 220px at 50% 100%, rgba(0, 0, 0, 0.92) 0%, rgba(0,0,0,0.92) 55%, transparent 90%),
+    radial-gradient(1100px 280px at 50% 100%, rgba(0, 0, 0, 0.72) 0%, rgba(0,0,0,0.75) 58%, transparent 92%);
+  background-size:
+    220px 120px,
+    240px 140px,
+    260px 130px,
+    280px 150px,
+    260px 135px,
+    240px 145px,
+    220px 120px,
+    auto,
+    auto;
+  background-repeat: repeat;
+  filter: blur(0.2px);
+  opacity: 0.95;
+  animation: crowdFlashes 6.5s linear infinite;
+}
+
+@keyframes crowdFlashes {
+  0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0, 0 0; }
+  100% { background-position: 120% 0%, 140% 0%, 110% 0%, 160% 0%, 130% 0%, 150% 0%, 125% 0%, 0 0, 0 0; }
+}
+
+.pageAuth .container {
+  position: relative;
+  z-index: 1;
+}
+
+.pageAuth .neonCard {
+  backdrop-filter: blur(14px);
+  background: rgba(6, 10, 18, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pageAuth .heroTitle {
+  letter-spacing: -0.02em;
+}
+
+.pageAuth .input {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pageAuth .label {
+  color: rgba(255,255,255,0.78);
+}
+.pageAuth select.input {
+  min-height: 46px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  color-scheme: dark;
+}
+
+.pageAuth select.input option {
+  background: #0B0F1A;
+  color: #FFFFFF;
+}
+
+.pageAuth select.input option:disabled {
+  color: rgba(255, 255, 255, 0.65);
+}
+@keyframes stadiumLights {
+  0% { transform: translateX(-1.5%); opacity: 0.82; filter: brightness(0.95) contrast(1.02); }
+  50% { transform: translateX(1.5%); opacity: 1; filter: brightness(1.08) contrast(1.06); }
+  100% { transform: translateX(-1.5%); opacity: 0.88; filter: brightness(1.0) contrast(1.03); }
+}
+.fieldErrPlaceholder { visibility: hidden; }

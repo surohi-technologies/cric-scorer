@@ -51,6 +51,14 @@ public class AuthServiceImpl implements AuthService {
         }
 
         var user = userOpt.get();
+        if (!user.isActive() || !user.isVerified()) {
+            return ResponseEntity.status(403).body(LoginResponse.builder()
+                    .message("Account is not verified. Please complete OTP verification.")
+                    .profileCompleted(false)
+                    .firstTimeLogin(true)
+                    .nextAction("VERIFY_OTP")
+                    .build());
+        }
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return ResponseEntity.status(401).body(LoginResponse.builder().message("Invalid credentials").build());
         }

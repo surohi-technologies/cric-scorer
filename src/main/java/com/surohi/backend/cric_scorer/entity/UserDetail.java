@@ -64,4 +64,16 @@ public class UserDetail extends Base {
 
     private boolean isActive = true;
     private boolean isProfileCompleted = false;
+
+    @Column(name = "is_verified", nullable = false)
+    private boolean isVerified = true;
+
+    @Column(name = "verified_email", nullable = false)
+    private boolean verifiedEmail = true;
+
+    @Column(name = "verified_phone", nullable = false)
+    private boolean verifiedPhone = true;
+
+    @Column(name = "verification_required_channels")
+    private String verificationRequiredChannels;
 }

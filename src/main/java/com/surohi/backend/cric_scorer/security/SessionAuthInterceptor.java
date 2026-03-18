@@ -22,7 +22,12 @@ public class SessionAuthInterceptor implements HandlerInterceptor {
             return true;
         }
         String path = request.getRequestURI();
-        if (path.endsWith("/user/register") || path.endsWith("/auth/login") || path.endsWith("/auth/logout") || path.contains("/meta/")) {
+        if (path.endsWith("/user/register")
+                || path.endsWith("/auth/login")
+                || path.endsWith("/auth/logout")
+                || path.contains("/auth/forgot-password")
+                || path.contains("/auth/registration/")
+                || path.contains("/meta/")) {
             return true;
         }
 

@@ -11,12 +11,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegistrationResponse {
+public class RegistrationOtpResponse {
     private String message;
-    private Long userId;
-    private String userName;
-    private String uniqueIdentifier;
-
-    private boolean verificationRequired;
-    private List<String> requiredChannels; // EMAIL / PHONE
+    private boolean verified;
+    private boolean active;
+    private List<String> requiredChannels;
+    private List<String> verifiedChannels;
 }
+

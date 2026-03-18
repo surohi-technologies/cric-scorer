@@ -43,10 +43,20 @@ public class PlayerProfileRequest {
     @NotNull
     private Integer playerRoleTypeId;
 
-    // Optional
+    @NotNull
     private Integer battingIntentId;
 
+    @NotBlank
     private String favouritePlayer;
+
+    @NotBlank
     private String favouriteTeam;
+
+    /**
+     * If true (or null), backend will generate a consistent description based on selected options
+     * and ignore any client-provided description. If false, backend will accept {@link #description}.
+     */
+    private Boolean autoDescription;
+
     private String description;
 }

@@ -5,8 +5,11 @@ import com.surohi.backend.cric_scorer.repository.CountryDialCodeRepository;
 import com.surohi.backend.cric_scorer.repository.UserDetailRepository;
 import com.surohi.backend.cric_scorer.request.UserRegistrationRequest;
 import com.surohi.backend.cric_scorer.response.UserRegistrationResponse;
+import com.surohi.backend.cric_scorer.service.OtpService;
+import com.surohi.backend.cric_scorer.service.PasswordService;
 import com.surohi.backend.cric_scorer.service.UserDetailService;
 import com.surohi.backend.cric_scorer.validator.UserRegistrationValidator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +25,22 @@ public class UserDetailServiceImpl implements UserDetailService {
     private final PasswordEncoder passwordEncoder;
     private final SecureRandom secureRandom = new SecureRandom();
     private final UserRegistrationValidator userRegistrationValidator;
+    private final OtpService otpService;
+    private final PasswordService passwordService;
+    private final boolean requireBothChannels;
 
     public UserDetailServiceImpl(UserDetailRepository userDetailRepository,
                                  PasswordEncoder passwordEncoder,
-                                 CountryDialCodeRepository countryDialCodeRepository) {
+                                 CountryDialCodeRepository countryDialCodeRepository,
+                                 OtpService otpService,
+                                 PasswordService passwordService,
+                                 @Value("${app.registration.require-both-channels:true}") boolean requireBothChannels) {
         this.userDetailRepository = userDetailRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRegistrationValidator = new UserRegistrationValidator(countryDialCodeRepository);
+        this.otpService = otpService;
+        this.passwordService = passwordService;
+        this.requireBothChannels = requireBothChannels;
     }
 
     @Override
@@ -62,17 +74,44 @@ public class UserDetailServiceImpl implements UserDetailService {
         user.setPhoneCountryCode(phone != null && !phone.isBlank() ? phoneCountryCode : null);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setUniqueIdentifier(UUID.randomUUID().toString());
-        user.setActive(true);
+        // New users must verify OTP before login
+        user.setActive(false);
         user.setProfileCompleted(false);
+        user.setVerified(false);
+        user.setVerifiedEmail(false);
+        user.setVerifiedPhone(false);
+
+        // Track which channel(s) need verification.
+        String channels = buildRequiredChannels(email, phone);
+        user.setVerificationRequiredChannels(channels);
 
         UserDetail saved = userDetailRepository.save(user);
 
+        // record initial password in history
+        passwordService.recordInitialPassword(saved);
+
+        // send OTP(s)
+        var sent = otpService.sendRegistrationOtps(saved);
+
         return ResponseEntity.ok(UserRegistrationResponse.builder()
-                .message("User registered successfully")
+                .message("User registered successfully. Please verify OTP to activate your account.")
                 .userId(saved.getId())
                 .userName(saved.getUserName())
                 .uniqueIdentifier(saved.getUniqueIdentifier())
+                .verificationRequired(true)
+                .requiredChannels(sent.stream().map(Enum::name).toList())
                 .build());
+    }
+
+    private String buildRequiredChannels(String email, String phone) {
+        boolean hasEmail = email != null && !email.isBlank();
+        boolean hasPhone = phone != null && !phone.isBlank();
+        if (hasEmail && hasPhone) {
+            return requireBothChannels ? "EMAIL,PHONE" : "EMAIL";
+        }
+        if (hasEmail) return "EMAIL";
+        if (hasPhone) return "PHONE";
+        return null;
     }
 
     private String generateUniqueUserName(String firstName, String lastName) {
