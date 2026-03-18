@@ -8,6 +8,7 @@ import java.util.List;
 
 public class UserRegistrationValidator {
     private final CountryDialCodeRepository countryDialCodeRepository;
+    private final PasswordPolicyValidator passwordPolicyValidator = new PasswordPolicyValidator();
 
     public UserRegistrationValidator(CountryDialCodeRepository countryDialCodeRepository) {
         this.countryDialCodeRepository = countryDialCodeRepository;
@@ -31,6 +32,9 @@ public class UserRegistrationValidator {
         }
 
         if (phone != null && !phone.isBlank()) {
+            if (!isAllDigits(phone)) {
+                errors.add(new ValidationError("phoneNumber", "phoneNumber must contain digits only"));
+            }
             if (dial == null || dial.isBlank()) {
                 errors.add(new ValidationError("phoneCountryCode", "phoneCountryCode is required when phoneNumber is provided"));
             } else if (!isValidDialCodeFormat(dial)) {
@@ -42,6 +46,16 @@ public class UserRegistrationValidator {
                     errors.add(new ValidationError("phoneCountryCode", "Unsupported phoneCountryCode"));
                 }
             }
+        }
+
+        // Password checks
+        String password = normalizeNullable(request.getPassword());
+        String confirm = normalizeNullable(request.getConfirmPassword());
+        passwordPolicyValidator.validate("password", password, errors);
+        if (confirm == null || confirm.isBlank()) {
+            errors.add(new ValidationError("confirmPassword", "confirmPassword is required"));
+        } else if (password != null && !password.equals(confirm)) {
+            errors.add(new ValidationError("confirmPassword", "confirmPassword must match password"));
         }
 
         if (!errors.isEmpty()) {
@@ -64,8 +78,14 @@ public class UserRegistrationValidator {
         return true;
     }
 
+    private static boolean isAllDigits(String value) {
+        for (int i = 0; i < value.length(); i++) {
+            if (!Character.isDigit(value.charAt(i))) return false;
+        }
+        return !value.isEmpty();
+    }
+
     private static String normalizeNullable(String value) {
         return value == null ? null : value.trim();
     }
 }
-

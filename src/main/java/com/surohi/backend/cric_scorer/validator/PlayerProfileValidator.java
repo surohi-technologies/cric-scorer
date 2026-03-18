@@ -46,6 +46,22 @@ public class PlayerProfileValidator {
             errors.add(new ValidationError("playerRoleTypeId", "playerRoleTypeId is required"));
         }
 
+        if (request.getBattingIntentId() == null) {
+            errors.add(new ValidationError("battingIntentId", "battingIntentId is required"));
+        }
+
+        if (request.getFavouritePlayer() == null || request.getFavouritePlayer().trim().isBlank()) {
+            errors.add(new ValidationError("favouritePlayer", "favouritePlayer is required"));
+        }
+        if (request.getFavouriteTeam() == null || request.getFavouriteTeam().trim().isBlank()) {
+            errors.add(new ValidationError("favouriteTeam", "favouriteTeam is required"));
+        }
+
+        // description is optional, but keep a reasonable bound to avoid abuse
+        if (request.getDescription() != null && request.getDescription().trim().length() > 800) {
+            errors.add(new ValidationError("description", "description must be at most 800 characters"));
+        }
+
         if (!errors.isEmpty()) {
             throw new ValidationException("Validation failed", errors);
         }

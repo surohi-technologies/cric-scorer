@@ -4,8 +4,12 @@ import com.surohi.backend.cric_scorer.entity.UserSession;
 import com.surohi.backend.cric_scorer.repository.UserDetailRepository;
 import com.surohi.backend.cric_scorer.repository.UserSessionRepository;
 import com.surohi.backend.cric_scorer.service.SessionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
@@ -17,6 +21,8 @@ import java.util.UUID;
 
 @Service
 public class SessionServiceImpl implements SessionService {
+
+    private static final Logger log = LoggerFactory.getLogger(SessionServiceImpl.class);
 
     private final UserSessionRepository userSessionRepository;
     private final UserDetailRepository userDetailRepository;
@@ -30,8 +36,22 @@ public class SessionServiceImpl implements SessionService {
         this.idleTimeout = Duration.ofSeconds(Math.max(1, idleTimeoutSeconds));
     }
 
-    @Override
+    /**
+     * Backend-side auto expiry for idle sessions.
+     * Note: This marks sessions inactive even if the user never sends another request.
+     */
+    @Scheduled(fixedDelayString = "${app.session.cleanup-interval-ms:30000}")
     @Transactional
+    public void expireIdleSessions() {
+        Instant cutoff = Instant.now().minus(idleTimeout);
+        int updated = userSessionRepository.deactivateExpiredSessions(cutoff);
+        if (updated > 0) {
+            log.info("Expired {} idle session(s) (cutoff={})", updated, cutoff);
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String createSessionKey(Long userId) {
         var user = userDetailRepository.findById(userId).orElseThrow();
         String sessionKey = UUID.randomUUID().toString();
@@ -89,4 +109,3 @@ public class SessionServiceImpl implements SessionService {
         }
     }
 }
-
